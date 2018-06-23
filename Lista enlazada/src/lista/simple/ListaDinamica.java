@@ -1,11 +1,15 @@
 package lista.simple;
 
+import java.util.Iterator;
+
+
 /**
  * Lista Dinamica Version 2.0
  *
  * @author DiscoDurodeRoer
+ * @param <T>
  */
-public class ListaDinamica<T> {
+public class ListaDinamica<T> implements Iterable<T>{
 
     //Atributos
     private Nodo<T> primero;
@@ -453,5 +457,33 @@ public class ListaDinamica<T> {
         }
 
     }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new MyIterator();
+    }
+
+    //Creo la clase interna MyIterator, que implementa la interfaz Iterator
+    private class MyIterator<ListaDinamica> implements Iterator<T>{
+
+        //Indica el siguiente elemento que se va a devolver 
+        private int siguiente;
+        
+        //Indica si hay un elemento
+        @Override
+        public boolean hasNext() {
+            return getNode(siguiente)!=null;
+        }
+
+        //Devuelve el elemento actual e incrementa al siguiente
+        @Override
+        public T next() {
+            T elemento = getNode(siguiente).getElemento();
+            siguiente++;
+            return elemento;
+        }
+        
+    }
+    
 
 }
