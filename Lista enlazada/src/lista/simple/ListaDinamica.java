@@ -1,7 +1,7 @@
 package lista.simple;
 
 /**
- * Lista Dinamica
+ * Lista Dinamica Version 2.0
  *
  * @author DiscoDurodeRoer
  */
@@ -244,6 +244,213 @@ public class ListaDinamica<T> {
         }
 
         return contenido;
+
+    }
+
+    /**
+     * Indica si existe el elemento indicado
+     *
+     * @param elemento
+     * @return
+     */
+    public boolean exists(T elemento) {
+
+        //Si esta vacio, devuelve el false
+        if (isEmpty()) {
+            return false;
+        } else {
+
+            Nodo<T> aux = primero;
+
+            //Recorremos la lista
+            while (aux != null) {
+                if (elemento.equals(aux.getElemento())) { //Mejor .equals que ==
+                    return true; //Existe
+                }
+                aux = aux.getSiguiente();
+            }
+
+            //Si no lo encuentra devuelve false
+            return false;
+
+        }
+    }
+
+    /**
+     * Indica la posición del elemento
+     *
+     * @param elemento
+     * @return
+     */
+    public int indexOf(T elemento) {
+
+        //Si esta vacio, devuelvemos -1
+        if (isEmpty()) {
+            return -1;
+        } else {
+
+            Nodo<T> aux = primero;
+
+            int posicion = 0;
+            while (aux != null) {
+                if (elemento.equals(aux.getElemento())) { //Mejor .equals que ==
+                    return posicion; //Existe
+                }
+                posicion++;
+                aux = aux.getSiguiente();
+            }
+            //Si no lo encuentra devuelve -1
+            return -1;
+
+        }
+
+    }
+
+    /**
+     * Elimina el primer elemento de la lista
+     *
+     * @return
+     */
+    public T removeFirst() {
+
+        //Si la lista esta vacia, devolvemos null
+        if (isEmpty()) {
+            return null;
+        } else {
+
+            //Guardo el elemento antes
+            T elemento = primero.getElemento();
+
+            //Cojo el segundo
+            Nodo<T> aux = primero.getSiguiente();
+            primero = null; //Lo marco como null para el recolector
+            primero = aux; //Este es mi nuevo primero
+
+            //En caso de que borremos el ultimo elemento,el ultimo también
+            if (size() == 1) {
+                ultimo = null;
+            }
+
+            tamanio--;
+
+            return elemento;
+
+        }
+
+    }
+
+    /**
+     * Borra el ultimo elemento de la lista
+     *
+     * @return
+     */
+    public T removeLast() {
+
+        if (isEmpty()) {
+            return null;
+        } else {
+
+            //Coge el elemento antes de borrar
+            T elemento = ultimo.getElemento();
+
+            //Cojo el penultimo
+            Nodo<T> aux = getNode(size() - 2);
+
+            //En caso de que sea null
+            //Hay 1 o dos elementos
+            if (aux == null) {
+
+                //marco el ultimo como nulo
+                ultimo = null;
+                //Si hay dos, el primero y el ultimo seran el mismo
+                //Si hay 1 elemento, significa que borramos la lista
+                if (size() == 2) {
+                    ultimo = primero;
+                } else {
+                    primero = null;
+                }
+
+            } else {
+                //el penultimo es el nuevo ultimo 
+                //y le ponemos como siguiente nulo
+                ultimo = null;
+                ultimo = aux;
+                ultimo.setSiguiente(null);
+            }
+
+            tamanio--;
+
+            return elemento;
+
+        }
+
+    }
+
+    /**
+     * Elimina el nodo de la lista en una posicion concreta
+     *
+     * @param index
+     * @return
+     */
+    public T remove(int index) {
+        //si esta vacio o el indice no es correcto, devuelve null
+        if (isEmpty() || (index < 0 || index >= size())) {
+            return null;
+        } else if (index == 0) {
+            return removeFirst();
+        } else if (index == size() - 1) {
+            return removeLast();
+        } else {
+
+            //Cojo el nodo anterior al que quiero borrar
+            Nodo<T> nodo_anterior = getNode(index - 1);
+
+            //Cojo el nodo que quiero borrar
+            Nodo<T> nodo_actual = getNode(index);
+
+            //Cojo el elemento antes de borrar
+            T elemento = nodo_actual.getElemento();
+
+            //Cojo el nodo siguiente al que quiero borrar
+            Nodo<T> nodo_siguiente = nodo_actual.getSiguiente();
+
+            //Lo marco para borrar para el recolector
+            nodo_actual = null;
+
+            //El nodo anterior apunta al nodo siguiente
+            nodo_anterior.setSiguiente(nodo_siguiente);
+
+            tamanio--;
+
+            return elemento;
+
+        }
+    }
+
+    /**
+     * Modifico el elemento de una posicion No afecta a la estructura de la
+     * lista
+     *
+     * @param elemento
+     * @param index
+     * @return
+     */
+    public T modify(T elemento, int index) {
+
+        //si esta vacio o el indice no es correcto, devuelve null
+        if (isEmpty() || (index < 0 || index >= size())) {
+            return null;
+        } else {
+
+            //Nodo actual
+            Nodo<T> aux = getNode(index);
+
+            //modifico
+            aux.setElemento(elemento);
+
+            return aux.getElemento();
+
+        }
 
     }
 
